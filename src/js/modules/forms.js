@@ -12,6 +12,16 @@ export const forms = () => {
         failure: 'что-то пошло не так...',
     }
 
+    const postData = async (url, data) => {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {'Content-type': 'multipart/form-data;'},
+            body: data
+        })
+
+        return await res.json();
+    }
+
     $forms.forEach(form => {
         form.addEventListener('submit', e => {
             e.preventDefault();
@@ -21,17 +31,18 @@ export const forms = () => {
             statusMessage.style.cssText = 'display: block; margin: 0 auto;';
             form.append(statusMessage);
 
-            const formData = new FormData(form);
+            
+            let obj = {};
+            new FormData(form).forEach(function(value, key){
+                obj[key] = value;
+            });
+            let json = JSON.stringify(obj);
 
-            fetch('server.php', {
-                method: "POST",
-                // headers: {'Content-type': 'multipart/form-data;'},
-                body: formData
-            }).then(data => data.text())
+            
+            postData('http://localhost:3000/requests', json)
             .then(data => {
                 console.log(data);
                 showThanksModal(message.success)
-                form.reset();
                 statusMessage.remove();
             }).catch(() => {
                 showThanksModal(message.failure);
@@ -62,13 +73,19 @@ export const forms = () => {
             prevModalDialog.style.display = 'block';
         }, 3000)
 
-    }
+    }      
 
-    fetch('http://localhost:3000/menu')
-        .then(data => data.json())
-        .then(res => console.log(res));
-    fetch('http://localhost:3000/requests')
-        .then(data => data.json())
-        .then(res => console.log(res));
+
+
+
+
+
+
+    // fetch('http://localhost:3000/menu')
+    //     .then(data => data.json())
+    //     .then(res => console.log(res));
+    // fetch('http://localhost:3000/requests')
+    //     .then(data => data.json())
+    //     .then(res => console.log(res));
     // showThanksModal();
 }
