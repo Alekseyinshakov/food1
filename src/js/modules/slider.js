@@ -9,11 +9,17 @@ export const slider = () => {
     const totalSlidesNum = document.querySelectorAll('.offer__slide').length - 1;
     let currentSlideNum = 0;
 
+    let dots;
+
     _total.textContent = getZiro(totalSlidesNum + 1);
 
     function showSlideNumber(n) {
         sliderWrapper.style.transform = `translateY(-${n * 390}px)`;
         _current.textContent = getZiro(currentSlideNum + 1);
+        dots.forEach((dot) => {
+            dot.classList.remove('active');
+        })
+        dots[n].classList.add('active');
     }
 
     _nextBtn.addEventListener('click', () => {
@@ -36,7 +42,25 @@ export const slider = () => {
         }        
     })
 
+    createDots()
     showSlideNumber(0)
+
+    function createDots(params) {
+        const dotParrent = document.querySelector('.slider-navigation');
+
+        for (let i = 0; i < totalSlidesNum+1; i++) {
+            dotParrent.innerHTML += '<div class="slider-navigation__dot"></div>';
+        }   
+        dots = document.querySelectorAll('.slider-navigation__dot')
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => {
+                currentSlideNum = i;
+                showSlideNumber(currentSlideNum)
+            })
+        })
+    }
+
+    
 
 }
 

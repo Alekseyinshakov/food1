@@ -95,5 +95,21 @@
             object-fit: cover;
         }
     }
-
+    .slider-navigation{
+        padding: 15px;
+        display: flex;
+        gap: 20px;
+        width: 100%;
+        justify-content: center;
+        &__dot{
+            cursor: pointer;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #c74e4e;
+            &.active{
+                transform: scale(1.5);
+            }
+        }
+    }
 }
